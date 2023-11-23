@@ -1,0 +1,40 @@
+
+Pentru a implementa masina Turing am construit un algoritm care parcurge banda
+si adauga caracterele decodificate la inceputul benzii.
+
+Recunoasterea literelor:
+Am definit cate o stare pentru fiecare litera gasita,si un numar de stari 
+temporare pentru fiecare combinatie admisa de codul morse(de exemplu "..","-.").
+Pentru literele definite de 4 caractere morse am definit direct tranzitia la 
+starea literei gasite,la cele de 3,2,1 caractere am cautat "*","/" sau "_".
+Odata gasit unul din caracterele definite anterior,cunosc ce caracter descrie 
+starea in care ma aflam anterior.
+
+Afisarea pe banda:
+Cand incep procesarea benzii,in starea q0 afisez caracterul "+",acest caracter 
+imi foloseste ca un indicator " next insert here".Iar cand intru intr-o stare 
+definita pentru o litera sau "/" ,merg inapoi pana nu gasesc simbolul "+",apoi\
+o inserez pe acel loc.Am definit starea "mark_next" pentru a defini locul in 
+care o sa inserez urmatorul caracter.Dupa ce am marcat locul pentru urmatoarea 
+inserare,intru in starea get_back,care printeaza "&" in locul tuturor 
+caracterelor deja procesate de decodificator.Starea get_back parcurge banda 
+pana la "*,/,_",iar daca citeste "*",intra in starea "q0n",care face acelasi 
+lucru ca si "q0",doar ca nu afiseaza + pe pozitia sa.Daca intalneste "/" merge
+inapoi la simbolul + si printeaza "/" acolo.Iar daca vede "_" atunci intra in 
+starea "finish_band",care condusa de principiul ca inceputul benzii contine
+cuvantul decodificat,adauga "_" in locul caracterelor "&" de pe banda.Astfel,
+starea "finish_band" finalizeaza continutul benzii.
+
+Recunoasterea cuvintelor speciale:
+Dupa ce am finisat cu decodificarea,intru intr-o stare "start_2" care se 
+intoarce la inceputul mesajului decodificat.Apoi incep sa fac verificarea in 
+starea "check".Odataa ce citesc litera "H" sau "S",trec intr-o stare 
+intermediara,odata ce citesc o litera diferita de "E" si "O" respectiv,trec 
+inapoi la check mai departe,si repete procesul,iar daca citesc "E" sau "O",
+trec in urmatoarea stare intermediara.Daca citesc S pentru "SO" intru in starea
+"Y",invers,ma intorc la check.Daca citesc L pentru "HE" trec in starea "HEL" si
+caut caracterul "P",iar daca il gasesc returnez "Y",in celalalt caz continui 
+checkul.Odata ce ajung la "_" intru in "N",in concluzie nu am gasit cuvintele
+magice.
+
+Pujleacov Artiom 315CB.
